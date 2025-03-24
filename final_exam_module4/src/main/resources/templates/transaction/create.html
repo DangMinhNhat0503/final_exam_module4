@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{layout/head::head ('Tạo mới giao dịch')}">
+</head>
+
+<body>
+<div class="wrapper d-flex">
+    <!-- Sidebar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark vh-100 p-3 w-25">
+        <div class="container-fluid flex-column">
+            <a class="navbar-brand" href="#">Quản lý</a>
+            <button class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="sidebarMenu">
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">
+                            <i class="fas fa-home"></i> Trang chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/transaction">
+                            <i class="fas fa-exchange-alt"></i> Danh sách giao dịch
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customers">
+                            <i class="fas fa-user"></i> Khách hàng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/employees">
+                            <i class="fas fa-user-tie"></i> Nhân viên
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Nội dung chính -->
+    <div class="content-wrapper flex-grow-1 p-3 w-75">
+        <h1 class="text-center">Tạo mới giao dịch</h1>
+        <div class="container-fluid">
+            <div class="card card-default">
+                <div class="card-body">
+                    <form action="/transaction/save" method="POST" th:object="${transaction}">
+
+                        <div class="form-group">
+                            <label for="customer">Chọn khách hàng</label>
+                            <select id="customer" class="form-control" th:field="*{customer.id}" required>
+                                <option value="">-- Chọn khách hàng --</option>
+                                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="typeService">Chọn loại bất động sản</label>
+                            <select class="form-control" id="typeService" name="typeService" required>
+                                <option value="Nha">Nhà</option>
+                                <option value="Nha_va_dat">Nhà và Đất</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ngày giao dịch</label>
+                            <input type="date" class="form-control" th:classappend="${#fields.hasErrors('createdAt')} ? 'is-invalid' : ''" th:field="*{createdAt}" style="width: 50%;" required>
+                            <span class="invalid-feedback" role="alert">
+                                            <strong th:if="${#fields.hasErrors('createdAt')}" th:text="${#fields.errors('createdAt')[0]}"></strong>
+                                        </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Đơn giá</label>
+                            <input type="number" class="form-control" th:classappend="${#fields.hasErrors('price')} ? 'is-invalid' : ''" th:field="*{price}" style="width: 50%;" required>
+                            <span class="invalid-feedback" role="alert">
+                                            <strong th:if="${#fields.hasErrors('price')}" th:text="${#fields.errors('price')[0]}"></strong>
+                                        </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Diện tích (m²)</label>
+                            <input type="number" class="form-control" th:classappend="${#fields.hasErrors('area')} ? 'is-invalid' : ''" th:field="*{area}" style="width: 50%;" required>
+                            <span class="invalid-feedback" role="alert">
+                                            <strong th:if="${#fields.hasErrors('price')}" th:text="${#fields.errors('price')[0]}"></strong>
+                                        </span>
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='/transaction'">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{layout/script::script}"></th:block>
+
+</body>
+</html>
+
+
+<th:block th:replace="~{layout/script::script}"></th:block>
+
+
+</body>
+</html>
