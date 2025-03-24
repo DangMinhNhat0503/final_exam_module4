@@ -11,14 +11,16 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 
 @Entity(name = "giao_dich")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE giao_dich SET deleted_at = Now() WHERE id=?")
+@SQLDelete(sql = "UPDATE giao_dich SET deleted_at = NOW() WHERE id=?")
 @Where(clause = "deleted_at is null")
 public class Transaction {
 
@@ -32,8 +34,8 @@ public class Transaction {
     private Customer customer;
 
     @Column(name = "transaction_date")
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate createdAt;
 
     @Column(name = "type")
     private String typeService;

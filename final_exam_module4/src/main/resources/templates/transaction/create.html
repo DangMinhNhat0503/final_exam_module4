@@ -54,7 +54,7 @@
 
                         <div class="form-group">
                             <label for="customer">Chọn khách hàng</label>
-                            <select id="customer" class="form-control" th:field="*{customer.id}" required>
+                            <select id="customer" name="customerid" class="form-control" style="width: 50%;" required>
                                 <option value="">-- Chọn khách hàng --</option>
                                 <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName}"></option>
                             </select>
@@ -62,9 +62,9 @@
 
                         <div class="form-group">
                             <label for="typeService">Chọn loại bất động sản</label>
-                            <select class="form-control" id="typeService" name="typeService" required>
-                                <option value="Nha">Nhà</option>
-                                <option value="Nha_va_dat">Nhà và Đất</option>
+                            <select class="form-control" id="typeService" name="typeService" style="width: 50%;" required>
+                                <option value="Nhà">Nhà</option>
+                                <option value="Nhà và Đất">Nhà và Đất</option>
                             </select>
                         </div>
 

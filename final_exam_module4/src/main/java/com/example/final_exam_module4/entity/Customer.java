@@ -19,14 +19,14 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE khach_hang SET deleted_at = Now() WHERE id=?")
+@SQLDelete(sql = "UPDATE khach_hang SET deleted_at = NOW() WHERE id=?")
 @Where(clause = "deleted_at is null")
 public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "id")
-    private long id;
+    private Long id;
 
     @Pattern(regexp = "^[A-Za-z0-9À-ỹáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ ]+$", message = "Tên chỉ được chứa chữ cái, số, khoảng trắng và các ký tự tiếng Việt hợp lệ, không có ký tự đặc biệt.")
     @Size(min = 1, max = 255, message = "Tên phải từ 2 đến 50 ký tự.")

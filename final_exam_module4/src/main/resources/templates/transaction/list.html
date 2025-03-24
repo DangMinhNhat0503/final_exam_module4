@@ -117,32 +117,34 @@
 </div>
 
 <!-- Modal thông báo -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title text-center">Thông báo</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h4 class="modal-title text-center" id="successModalLabel">Thông báo</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p th:text="${success}"></p>
+        <p id="successMessage" th:text="${success}"></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" th:onclick="|window.location.href='/transaction'|">Đóng</button>
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal" onclick="window.location.href='/transaction'">Đóng</button>
       </div>
     </div>
   </div>
 </div>
 
+
 <th:block th:replace="~{layout/script::script}"></th:block>
 
 <!-- Script để hiện modal nếu có thông báo -->
 <script>
-  $(document).ready(function() {
-    if ($.trim($("#successModal .modal-body p").text()) !== "") {
-      $("#successModal").modal("show");
+  document.addEventListener("DOMContentLoaded", function () {
+    var successMessage = document.getElementById("successMessage").textContent.trim();
+
+    if (successMessage.length > 0) {
+      var successModal = new bootstrap.Modal(document.getElementById("successModal"));
+      successModal.show();
     }
   });
 </script>

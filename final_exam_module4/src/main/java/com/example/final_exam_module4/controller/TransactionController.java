@@ -61,9 +61,17 @@ public class TransactionController {
         return "transaction/create";
     }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes redirect) {
+        transactionService.remove(id);
+        redirect.addFlashAttribute("success", "Xóa thành công");
+        return "redirect:/transaction";
+    }
+
     @PostMapping("/save")
     public String save (
             @RequestParam (name = "typeService") String typeService,
+            @RequestParam (name = "customerid") Long customerId,
             @Validated @ModelAttribute Transaction transaction,
             BindingResult bindingResult,
             RedirectAttributes redirect,
@@ -76,7 +84,14 @@ public class TransactionController {
         }
 
         transaction.setTypeService(typeService);
-        transaction
+        Customer customer = customerService.findById(customerId);
+        transaction.setCustomer(customer);
+        transactionService.save(transaction);
+        redirect.addFlashAttribute("success", "Thêm mới thành công");
+        return "redirect:/transaction";
+
+
+
 
     }
 
