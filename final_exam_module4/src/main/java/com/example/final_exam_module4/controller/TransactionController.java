@@ -30,7 +30,7 @@ public class TransactionController {
             page = page - 1;
         }
 
-        Page<Transaction> transactions = transactionService.findByCustomerNameContainingIgnoreCase(searchByName, PageRequest.of(page, 20));
+        Page<Transaction> transactions = transactionService.findByCustomerNameContainingIgnoreCase(searchByName, PageRequest.of(page, 3));
 
         if (transactions.isEmpty()) {
             model.addAttribute("message", "Không tìm thấy dữ liệu");

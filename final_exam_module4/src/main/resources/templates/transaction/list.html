@@ -1,107 +1,130 @@
+
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{layout/head::head ('Danh sách giao dịch')}">
+<head th:replace="~{layout/head::head ('Danh sách nhân viên')}">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed text-sm">
-<div class="wrapper">
-  <th:block th:insert="~{layout/sidebar::sidebar}"></th:block>
-  <div class="content-wrapper">
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="page-title m-0">Danh sách giao dịch</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+
+<body>
+<div class="wrapper d-flex">
+  <!-- Sidebar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark vh-100 p-3 w-25">
+    <div class="container-fluid flex-column">
+      <a class="navbar-brand" href="#">Quản lý</a>
+      <button class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="sidebarMenu">
+        <ul class="navbar-nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="/dashboard">
+              <i class="fas fa-home"></i> Trang chủ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transaction">
+              <i class="fas fa-exchange-alt"></i> Danh sách giao dịch
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/customers">
+              <i class="fas fa-user"></i> Khách hàng
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/employees">
+              <i class="fas fa-user-tie"></i> Nhân viên
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">
+              <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card card-default">
-              <div class="card-body">
-                <form class="clearfix" action="/transaction/" method="GET">
-                  <div class="form-group row align-items-center">
-
-                    <!-- Thêm ô input tìm kiếm  -->
-                    <div class="col-md-4">
-                      <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" placeholder="Tìm kiếm theo tên khách hàng..." name="searchByName">
-                        <span class="input-group-btn">
-                                                    <button class="btn btn-sm btn-primary" type="submit">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="text-right">
-                    <button type="button" class="btn btn-sm btn-primary w-120px" onclick="window.location.href='/transaction/create'">Thêm mới</button>
-                  </div>
-                </form>
-
-                <div class="mt-2">
-                  <div class="mt-4">
-                    <div class="table-responsive" style="max-height: 600px;">
-                      <table class="table table-bordered table-hover table-valign-middle table-head-fixed text-nowrap text-center">
-                        <thead>
-                        <tr>
-                          <th class="bg-light">Mã Giao dịch</th>
-                          <th class="bg-light">Tên khách hàng </th>
-                          <th class="bg-light">Loại dịch vụ</th>
-                          <th class="bg-light">Ngày giao dịch </th>
-                          <th class="bg-light">Đơn gía</th>
-                          <th class="bg-light">Diện tích </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:if="${transactions.isEmpty()}">
-                          <td colspan="8">Không tìm thấy dữ liệu</td>
-                        </tr>
-                        <tr th:each="transaction : ${transactions}">
-                          <td th:text="${transaction.id}"></td>
-                          <td th:text="${transaction.customer.customerName}"></td>
-                          <td th:text="${transaction.typeService}"></td>
-                          <td th:text="${#temporals.format(transaction.createdAt, 'dd/MM/yyyy')}"></td>
-                          <td th:text="${transaction.price}"></td>
-                          <td th:text="${transaction.area}"></td>
-                          <td>
-                            <a th:href="@{/transaction/edit/{id}(id=${transaction.id})}" class="btn btn-sm btn-warning">Sửa</a>
-                            <a th:href="@{/transaction/delete/{id}(id=${transaction.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div th:insert="~{layout/paginator :: pagination(
-                          page=${transactions},
-                          url='/transaction',
-                          queryParams=${queryParams})
-                      }">
-                    </div>
-                  </div>
+  <!-- Nội dung chính -->
+  <div class="content-wrapper flex-grow-1 p-3 w-75">
+    <h1 class="text-center">Danh sách giao dịch</h1>
+    <div class="container-fluid">
+      <div class="card card-default">
+        <div class="card-body">
+          <form class="clearfix" action="/transaction/" method="GET">
+            <div class="form-group row align-items-center">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="text" class="form-control form-control-sm"
+                         placeholder="Tìm kiếm theo tên khách hàng..." name="searchByName">
+                  <span class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary" type="submit">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
                 </div>
               </div>
-              <!-- /.card-body -->
             </div>
+            <div class="text-right">
+              <button type="button" class="btn btn-sm btn-primary w-120px"
+                      onclick="window.location.href='/transaction/create'">Thêm mới
+              </button>
+            </div>
+          </form>
+
+          <div class="mt-2">
+            <div class="table-responsive" style="max-height: 600px;">
+              <table class="table table-bordered table-hover text-center">
+                <thead>
+                <tr>
+                  <th class="bg-light">Mã Giao dịch</th>
+                  <th class="bg-light">Tên khách hàng</th>
+                  <th class="bg-light">Loại dịch vụ</th>
+                  <th class="bg-light">Ngày giao dịch</th>
+                  <th class="bg-light">Đơn giá</th>
+                  <th class="bg-light">Diện tích</th>
+                  <th class="bg-light">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${transactions.isEmpty()}">
+                  <td colspan="7">Không tìm thấy dữ liệu</td>
+                </tr>
+                <tr th:each="transaction : ${transactions}">
+                  <td th:text="${transaction.id}"></td>
+                  <td th:text="${transaction.customer.customerName}"></td>
+                  <td th:text="${transaction.typeService}"></td>
+                  <td th:text="${#temporals.format(transaction.createdAt, 'dd/MM/yyyy')}"></td>
+                  <td th:text="${transaction.price}"></td>
+                  <td th:text="${transaction.area}"></td>
+                  <td>
+                    <a th:href="@{/transaction/edit/{id}(id=${transaction.id})}"
+                       class="btn btn-sm btn-warning">Sửa</a>
+                    <a th:href="@{/transaction/delete/{id}(id=${transaction.id})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div th:insert="~{layout/paginator :: pagination(page=${transactions}, url='/transaction', queryParams=${queryParams})}"></div>
           </div>
-          <!-- ./col -->
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- Modal thông báo -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true"></span>
-        </button>
         <h4 class="modal-title text-center">Thông báo</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
         <p th:text="${success}"></p>
@@ -113,17 +136,16 @@
   </div>
 </div>
 
+<th:block th:replace="~{layout/script::script}"></th:block>
 
-</body>
-<th:block th:replace="~{layout/script::script}">
-</th:block>
+<!-- Script để hiện modal nếu có thông báo -->
 <script>
   $(document).ready(function() {
-    // Kiểm tra nếu biến success có giá trị thì hiển thị modal
     if ($.trim($("#successModal .modal-body p").text()) !== "") {
       $("#successModal").modal("show");
     }
   });
 </script>
 
+</body>
 </html>
