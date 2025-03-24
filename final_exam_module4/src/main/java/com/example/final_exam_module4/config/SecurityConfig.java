@@ -43,13 +43,13 @@ public class SecurityConfig {
 //                Config các đường dẫn không cần đăng nhập
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/login")
+                                .requestMatchers("/login", "/transaction/**")
                                 .permitAll())
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
-                                .requestMatchers("/").authenticated())
+                                .requestMatchers("/transaction/**").authenticated())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/medicinegroup/**", "/medicines/**", "/customers/**", "/supplier/**", "/employee/**", "/user/**") // Các URL cần ROLE_ADMIN
+                        .requestMatchers("/transaction/**") // Các URL cần ROLE_ADMIN
                         .hasRole("ADMIN")
                 )
                 .formLogin((formLogin) ->
@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 .loginPage("/login")
                                 .failureUrl("/login?error=true")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/", true))
+                                .defaultSuccessUrl("/transaction", true))
                 .logout((logout) ->
                         logout.deleteCookies("remove")
                                 .invalidateHttpSession(false)
